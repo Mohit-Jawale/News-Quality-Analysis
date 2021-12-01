@@ -1,12 +1,11 @@
 import requests as req
 from bs4 import BeautifulSoup
 
-
-def hindu_head(url):
+def ndtv_head(url):
         link = url
         link = req.get(link)
         soup = BeautifulSoup(link.text, 'html.parser')
-        result = soup.find_all('h1', attrs={'class': "title"})
+        result=soup.find_all('div',attrs={'class':'ins_headline'})
         article = []
         l1 = len(result)
         flag=0
@@ -27,6 +26,3 @@ def hindu_head(url):
         # article.pop(0)
         article = [x for x in article if x is not None]
         return article[0]
-
-
-

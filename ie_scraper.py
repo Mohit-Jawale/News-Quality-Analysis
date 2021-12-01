@@ -2,11 +2,14 @@ import requests as req
 from bs4 import BeautifulSoup
 
 
-def hindu_head(url):
+def ie_scraper(url,path,req_type):
         link = url
         link = req.get(link)
         soup = BeautifulSoup(link.text, 'html.parser')
-        result = soup.find_all('h1', attrs={'class': "title"})
+        result=soup.find_all('div',attrs={'class':"dnews"})
+
+        result = soup.find_all('p')
+
         article = []
         l1 = len(result)
         flag=0
@@ -26,7 +29,18 @@ def hindu_head(url):
 
         # article.pop(0)
         article = [x for x in article if x is not None]
-        return article[0]
+        if req_type==1:
+            name = "/Users/mohit/Desktop/project/ranking_pro/ranking_code/og_file/og_article"
+        elif req_type==2 :
+            name=path 
+      
+            file = open(name, "a")
+
+        for x in article:
+            file.write(x)
+        file.close()
+
+
 
 
 

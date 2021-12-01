@@ -2,11 +2,14 @@ import requests as req
 from bs4 import BeautifulSoup
 
 
-def hindu_head(url):
+def hindu_scraper(url,path,req_type):
         link = url
         link = req.get(link)
         soup = BeautifulSoup(link.text, 'html.parser')
-        result = soup.find_all('h1', attrs={'class': "title"})
+        result = soup.find_all('div', attrs={'class': "_yeti_done"})
+
+        result = soup.find_all('p')
+
         article = []
         l1 = len(result)
         flag=0
@@ -16,7 +19,9 @@ def hindu_head(url):
             exp = result[i]  # this is pne array of paragraph
             l = len(exp)
             while j < l:
-                
+                if(exp.contents[j].string == "Please enter a valid email address."):
+                    flag = 1
+                    break
                 article.append(exp.contents[j].string)
                 j = j+1
             if flag == 1:
@@ -26,7 +31,19 @@ def hindu_head(url):
 
         # article.pop(0)
         article = [x for x in article if x is not None]
-        return article[0]
+        if req_type==1:
+            name = "/Users/mohit/Desktop/project/ranking_pro/ranking_code/og_file/og_article"
+        else :
+            name= path 
+            
+        
+        file = open(name, "a")
+
+        for x in article:
+            file.write(x)
+        file.close()
+
+
 
 
 
